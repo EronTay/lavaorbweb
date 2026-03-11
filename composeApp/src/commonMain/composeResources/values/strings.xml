@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Lava Orb</string>
+    <string name="pause">Pause</string>
+    <string name="resume">resume</string>
+    <string name="exit">exit</string>
+    <string name="back">back</string>
+    <string name="game_over">Game Over</string>
+    <string name="play_again">play again</string>
+    <string name="records">Records</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="play">play</string>
+</resources>
