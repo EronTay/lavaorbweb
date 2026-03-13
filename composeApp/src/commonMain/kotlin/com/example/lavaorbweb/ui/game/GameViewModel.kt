@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lavaorbweb.data.Repository
 import com.example.lavaorbweb.model.Orb
+import kotlin.math.min
 import kotlin.math.sin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -87,7 +88,8 @@ class GameViewModel(
         _ropeImage = ropeImage
         _dotImage = dotImage
 
-        scale = (size.width * 0.15f) / orbImage.width
+        val minDimension = min(size.width, size.height)
+        scale = (minDimension * 0.15f) / orbImage.width
         orbSize = Size(orbImage.width * scale, orbImage.height * scale)
         ringSize = Size(ringImage.width * scale, ringImage.height * scale)
         dotSize = Size(dotImage.width * scale, dotImage.height * scale)

@@ -2,8 +2,11 @@ package com.example.lavaorbweb.ui.game.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,54 +54,99 @@ fun GameOverDialog(
             ),
         contentAlignment = Alignment.Center
     ) {
-        IconButton(
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .align(Alignment.TopStart)
-                .safeDrawingPadding()
-                .fillMaxWidth(0.22f)
-                .aspectRatio(93f/75f),
-            shape = RectangleShape,
-            onClick = onExitClick
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Image(
-                modifier = Modifier.fillMaxSize(0.9f),
-                painter = painterResource(Res.drawable.back_button),
-                contentDescription = stringResource(Res.string.back),
-                contentScale = ContentScale.FillWidth
-            )
-        }
-        Column (
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = stringResource(Res.string.game_over),
-                style = MaterialTheme.typography.titleLarge
-            )
-            Spacer(modifier = Modifier.weight(0.1f))
-            Text(
-                text = score.toString(),
-                style = MaterialTheme.typography.titleLarge
-            )
-            Spacer(modifier = Modifier.weight(0.1f))
+            val isLandscape = maxWidth > maxHeight
+            val backWidth = if (isLandscape) 0.16f else 0.22f
+            val playAgainWidth = if (isLandscape) 0.42f else 0.55f
+
             IconButton(
                 modifier = Modifier
-                    .fillMaxWidth(0.55f)
-                    .aspectRatio(227f/114f),
+                    .padding(start = 20.dp)
+                    .align(Alignment.TopStart)
+                    .safeDrawingPadding()
+                    .fillMaxWidth(backWidth)
+                    .aspectRatio(93f/75f),
                 shape = RectangleShape,
-                onClick = onRestartClick
+                onClick = onExitClick
             ) {
                 Image(
                     modifier = Modifier.fillMaxSize(0.9f),
-                    painter = painterResource(Res.drawable.play_again_button),
-                    contentDescription = stringResource(Res.string.play_again),
+                    painter = painterResource(Res.drawable.back_button),
+                    contentDescription = stringResource(Res.string.back),
                     contentScale = ContentScale.FillWidth
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
+
+            if (!isLandscape) {
+                Column (
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = stringResource(Res.string.game_over),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Spacer(modifier = Modifier.weight(0.1f))
+                    Text(
+                        text = score.toString(),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Spacer(modifier = Modifier.weight(0.1f))
+                    IconButton(
+                        modifier = Modifier
+                            .fillMaxWidth(playAgainWidth)
+                            .aspectRatio(227f/114f),
+                        shape = RectangleShape,
+                        onClick = onRestartClick
+                    ) {
+                        Image(
+                            modifier = Modifier.fillMaxSize(0.9f),
+                            painter = painterResource(Res.drawable.play_again_button),
+                            contentDescription = stringResource(Res.string.play_again),
+                            contentScale = ContentScale.FillWidth
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            } else {
+                Row(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = stringResource(Res.string.game_over),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                        Text(
+                            text = score.toString(),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    }
+                    IconButton(
+                        modifier = Modifier
+                            .fillMaxWidth(0.6f)
+                            .aspectRatio(227f/114f),
+                        shape = RectangleShape,
+                        onClick = onRestartClick
+                    ) {
+                        Image(
+                            modifier = Modifier.fillMaxSize(0.9f),
+                            painter = painterResource(Res.drawable.play_again_button),
+                            contentDescription = stringResource(Res.string.play_again),
+                            contentScale = ContentScale.FillWidth
+                        )
+                    }
+                }
+            }
         }
     }
 }

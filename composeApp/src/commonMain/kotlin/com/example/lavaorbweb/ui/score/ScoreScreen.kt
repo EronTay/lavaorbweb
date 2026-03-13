@@ -3,10 +3,12 @@ package com.example.lavaorbweb.ui.score
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -63,80 +65,158 @@ private fun ScoreScreenContent(
         contentDescription = null,
         contentScale = ContentScale.Crop
     )
-    Box (
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .safeDrawingPadding(),
     ) {
-        IconButton(
-            modifier = Modifier
-                .padding(start = 20.dp)
-                .align(Alignment.TopStart)
-                .safeDrawingPadding()
-                .fillMaxWidth(0.22f)
-                .aspectRatio(93f/75f),
-            shape = RectangleShape,
-            onClick = navigateToStartScreen
-        ) {
-            Image(
-                modifier = Modifier.fillMaxSize(0.9f),
-                painter = painterResource(Res.drawable.back_button),
-                contentDescription = stringResource(Res.string.back),
-                contentScale = ContentScale.FillWidth
-            )
-        }
-        Text(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 10.dp)
-                .safeDrawingPadding(),
-            text = stringResource(Res.string.records),
-            style = MaterialTheme.typography.titleMedium
-        )
-        Column (
-            modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.TopCenter),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.weight(0.5f))
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth(0.6f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(10.dp)
+        val isLandscape = maxWidth > maxHeight
+
+        if (!isLandscape) {
+            Box (
+                modifier = Modifier.fillMaxSize(),
             ) {
-                items(results) { result ->
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                IconButton(
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                        .align(Alignment.TopStart)
+                        .safeDrawingPadding()
+                        .fillMaxWidth(0.22f)
+                        .aspectRatio(93f/75f),
+                    shape = RectangleShape,
+                    onClick = navigateToStartScreen
+                ) {
+                    Image(
+                        modifier = Modifier.fillMaxSize(0.9f),
+                        painter = painterResource(Res.drawable.back_button),
+                        contentDescription = stringResource(Res.string.back),
+                        contentScale = ContentScale.FillWidth
+                    )
+                }
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(top = 10.dp)
+                        .safeDrawingPadding(),
+                    text = stringResource(Res.string.records),
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.TopCenter),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.weight(0.5f))
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth(0.6f),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        items(results) { result ->
+                            Box(
+                                modifier = Modifier.fillMaxWidth(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Image(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .aspectRatio(247f/55f),
+                                    painter = painterResource(Res.drawable.record_item),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.FillBounds
+                                )
+                                Row (
+                                    modifier = Modifier.fillMaxWidth(0.8f),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(
+                                        text = result.timestamp.toDateString(),
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                    Text(
+                                        text = result.score.toString(),
+                                        style = MaterialTheme.typography.bodySmall
+                                    )
+                                }
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                }
+            }
+        } else {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier.weight(0.35f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            .fillMaxWidth(0.7f)
+                            .aspectRatio(93f/75f),
+                        shape = RectangleShape,
+                        onClick = navigateToStartScreen
                     ) {
                         Image(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .aspectRatio(247f/55f),
-                            painter = painterResource(Res.drawable.record_item),
-                            contentDescription = null,
-                            contentScale = ContentScale.FillBounds
+                            modifier = Modifier.fillMaxSize(0.9f),
+                            painter = painterResource(Res.drawable.back_button),
+                            contentDescription = stringResource(Res.string.back),
+                            contentScale = ContentScale.FillWidth
                         )
-                        Row (
-                            modifier = Modifier.fillMaxWidth(0.8f),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                    }
+                    Text(
+                        text = stringResource(Res.string.records),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(0.65f)
+                        .fillMaxHeight(0.85f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(results) { result ->
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Text(
-                                text = result.timestamp.toDateString(),
-                                style = MaterialTheme.typography.bodySmall
+                            Image(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(247f/55f),
+                                painter = painterResource(Res.drawable.record_item),
+                                contentDescription = null,
+                                contentScale = ContentScale.FillBounds
                             )
-                            Text(
-                                text = result.score.toString(),
-                                style = MaterialTheme.typography.bodySmall
-                            )
+                            Row (
+                                modifier = Modifier.fillMaxWidth(0.8f),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    text = result.timestamp.toDateString(),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                                Text(
+                                    text = result.score.toString(),
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
                         }
                     }
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }

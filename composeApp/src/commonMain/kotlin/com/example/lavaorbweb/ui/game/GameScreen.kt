@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -110,12 +111,16 @@ fun GameScreen(
         contentDescription = null,
         contentScale = ContentScale.Crop
     )
-    Box(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .safeDrawingPadding(),
         contentAlignment = Alignment.Center
     ) {
+        val isLandscape = maxWidth > maxHeight
+        val pauseWidthFraction = if (isLandscape) 0.14f else 0.22f
+        val scoreWidthFraction = if (isLandscape) 0.14f else 0.21f
+
         Canvas(
             modifier = Modifier
                 .fillMaxSize()
@@ -186,7 +191,7 @@ fun GameScreen(
             IconButton(
                 modifier = Modifier
                     .padding(start = 20.dp)
-                    .fillMaxWidth(0.22f)
+                    .fillMaxWidth(pauseWidthFraction)
                     .aspectRatio(93f/75f),
                 shape = RectangleShape,
                 onClick = {
@@ -206,7 +211,7 @@ fun GameScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Image(
-                    modifier = Modifier.fillMaxWidth(0.21f),
+                    modifier = Modifier.fillMaxWidth(scoreWidthFraction),
                     painter = painterResource(Res.drawable.score_container),
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth
